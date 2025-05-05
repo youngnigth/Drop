@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Store – DropCulture</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">DropCulture</div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <nav id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="cart.html">Cart 🛒 <span id="cart-count" class="cart-count">0</span></a>
+    </nav>
+  </header>
+
+  <main class="store-page">
+    <section class="store-header">
+      <h1 class="store-title">The Drop</h1>
+      <p class="store-subtext">Curated drops. No restocks. Only the bold survive.</p>
+      <div class="store-divider"></div>
+    </section>
+  
+    <div class="store-controls">
+      <div class="filter-buttons">
+        <button onclick="filterProducts('All')">All</button>
+        <button onclick="filterProducts('Shirts')">Shirts</button>
+        <button onclick="filterProducts('Hoodies')">Hoodies</button>
+        <button onclick="filterProducts('Mugs')">Mugs</button>
+      </div>
+  
+      <div class="sort-select">
+        <label for="sort">Sort by:</label>
+        <select id="sort" onchange="sortProducts(this.value)">
+          <option value="default">Newest</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="product-grid" id="product-list"></div>
+  </main>
+  
+
+  <footer>
+    <p>© 2025 DropCulture. Crafted for creators.</p>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("mobile-menu").classList.toggle("active");
+    }
+
+    const container = document.getElementById("product-list");
+    let currentCategory = "All";
+    let currentSort = "default";
+
+    function renderProducts() {
+      let filtered = currentCategory === "All"
+        ? products
+        : products.filter(p => p.category === currentCategory);
+
+      switch (currentSort) {
+        case "price-asc":
+          filtered.sort((a, b) => a.price - b.price);
+          break;
+        case "price-desc":
+          filtered.sort((a, b) => b.price - a.price);
+          break;
+        case "name-asc":
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "default":
+        default:
+          filtered.sort((a, b) => a.id - b.id);
+          break;
+      }
+
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="color:#aaa;">No products in this category.</p>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <a href="product.html?id=${p.id}">
+            <img src="${p.image}" alt="${p.name}">
+          </a>
+          <h3>${p.name}</h3>
+          <p>$${p.price.toFixed(2)}</p>
+          <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterProducts(category) {
+      currentCategory = category;
+      renderProducts();
+    }
+
+    function sortProducts(option) {
+      currentSort = option;
+      renderProducts();
+    }
+
+    function addToCart(product, price) {
+      const cart = JSON.parse(localStorage.getItem("dropculture-cart")) || [];
+      cart.push({ product, price });
+      localStorage.setItem("dropculture-cart", JSON.stringify(cart));
+      updateCartCounter();
+      alert(`${product} added to cart.`);
+    }
+
+    function updateCartCounter() {
+      const cart = JSON.parse(localStorage.getItem("dropculture-cart")) || [];
+      const counter = document.getElementById("cart-count");
+      if (counter) {
+        counter.textContent = cart.length;
+        counter.style.display = cart.length > 0 ? "inline-block" : "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartCounter();
+      renderProducts();
+    });
+  </script>
+
+</body>
+</html>

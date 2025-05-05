@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DropCulture – Exclusive Creator Merch</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">DropCulture</div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <nav id="mobile-menu">
+      <a href="#">Lookbook</a>
+      <a href="store.html">Store</a>
+      <a href="cart.html">Cart 🛒 <span id="cart-count" class="cart-count">0</span></a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="overlay">
+      <h1>CREATOR. CURATOR. ICON.</h1>
+      <p>Limited drops designed for the bold. No compromises. No restocks.</p>
+      <a href="store.html" class="btn">Enter Store</a>
+    </div>
+  </section>
+
+  <section class="editorial">
+    <h2>Essentials Reimagined</h2>
+    <p>Inspired by underground streetwear culture & minimalist design.</p>
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1508835277982-1c1b0e205603?w=500&auto=format&fit=crop&q=60" alt="Drop 1" />
+      <img src="https://images.unsplash.com/photo-1546572797-e8c933a75a1f?w=500&auto=format&fit=crop&q=60" alt="Drop 2" />
+      <img src="https://images.unsplash.com/photo-1585846416120-3a7354ed7d39?w=500&auto=format&fit=crop&q=60" alt="Drop 3" />
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 DropCulture. Crafted for creators.</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("mobile-menu").classList.toggle("active");
+    }
+
+    function updateCartCounter() {
+      const cart = JSON.parse(localStorage.getItem("dropculture-cart")) || [];
+      const counter = document.getElementById("cart-count");
+      if (counter) {
+        counter.textContent = cart.length;
+        counter.style.display = cart.length > 0 ? "inline-block" : "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCartCounter);
+  </script>
+</body>
+</html>

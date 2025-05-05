@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product – DropCulture</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">DropCulture</div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <nav id="mobile-menu">
+      <a href="store.html">← Back to Store</a>
+      <a href="cart.html">Cart 🛒 <span id="cart-count" class="cart-count">0</span></a>
+    </nav>
+  </header>
+
+  <main class="product-page">
+    <div class="product-wrapper" id="product-container">
+      <!-- Dynamic content goes here -->
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 DropCulture. Crafted for creators.</p>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/product-page.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("mobile-menu").classList.toggle("active");
+    }
+
+    function updateCartCounter() {
+      const cart = JSON.parse(localStorage.getItem("dropculture-cart")) || [];
+      const counter = document.getElementById("cart-count");
+      if (counter) {
+        counter.textContent = cart.length;
+        counter.style.display = cart.length > 0 ? "inline-block" : "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCartCounter);
+  </script>
+</body>
+</html>
